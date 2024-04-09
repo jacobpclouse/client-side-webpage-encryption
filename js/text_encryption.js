@@ -17,7 +17,19 @@ document.getElementById("report-form").addEventListener("submit", function(event
 
 async function mainBody(inputText,inputKey){
 
-  //
+  // Generate IV
+  let iv_hash = await sha256HashFunc(generateIV());
+  console.log(`IV Hash: ${iv_hash}`);
+
+  // Execute Encryption
+  let returned = await encryptionFunc(inputText,inputKey,iv_hash);
+  console.log(`Final Blocks: ${returned}`);
+  updateHTML(returned, "displayValueEncrypted");
+
+  // Execute Decryption
+  let decryptedReturned = await decryptionFunc(returned, inputKey, iv_hash);
+  console.log(`Decrypted: ${decryptedReturned}`);
+  updateHTML(decryptedReturned, "displayValueDecrypted");
 }
 
 
