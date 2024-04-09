@@ -64,6 +64,7 @@ async function encryptionFunc(msn,enck,h0){
   // n: number of blocks -- not used in this
   // enck: key
   // name_e_File_encrypted: name of file of store e value -- not used in this
+  // h0: IV
 
   
   // STEP 1: e = HASH(MSN, H0);
@@ -113,4 +114,60 @@ async function encryptionFunc(msn,enck,h0){
 
   // console.log(blocks.length === msn.length);
   return blocks;
+}
+
+
+// decryption function
+async function decryptionFunc(blk,enck,h0){
+
+  // blk: encrypted blocks of size n
+  // n: block size
+  // enck: key
+  // h0: IV
+
+  // STEP 1: H1 = HASH(ENCK, H0);
+  let h1 = await sha256HashFunc(enck + h0);
+
+
+  // STEP 2: e = BLK[0] XOR ENCK;
+  initial_block = blk[0];
+  // console.log(`Block Length: ${blk[0].length}`)
+
+  let e_val = "";
+  for (let index = 0; index < blk[0].length; index++){
+    let initial_xor = initial_block.charCodeAt(index) ^ h1.charCodeAt(index);
+    e_val += String.fromCharCode(initial_xor);
+  }
+
+
+  // STEP 3: H1 = HASH(e, H1);
+  h1 = await sha256HashFunc(e_val + h1);
+  console.log(`decrypt h1: ${h1}`);
+
+
+  // STEP 4 - REST OF DECRYPT
+  let blocks = [];
+  for (let ciphertext_block = 1; ciphertext_block < blk.length; ciphertext_block++){
+    let current_block = blk[ciphertext_block];
+    let plaintext_block = "";
+
+    // debugging statements:
+    // console.log(`ciphertext_block: ${ciphertext_block}`);
+    // console.log(`current_block: ${current_block}`);
+    // console.log(`blk.length: ${blk.length}`);
+    // console.log(`blk: ${blk}`);
+
+    for (let i = 0; i < current_block.length; i++){
+      plaintext_block += String.fromCharCode(current_block.charCodeAt(i) ^ h1.charCodeAt(i));
+      console.log(plaintext_block);
+    }
+    blocks.push(plaintext_block);
+
+    
+    // H1 = HASH(H1,H1);
+    h1 = await sha256HashFunc(h1 + h1);
+  }
+
+  console.log(blocks);
+  return blocks.join('');
 }
