@@ -154,7 +154,7 @@ async function decryptionFunc(blk,enck,h0){
 
   // STEP 3: H1 = HASH(e, H1);
   h1 = await sha256HashFunc(e_val + h1);
-  console.log(`decrypt h1: ${h1}`);
+  // console.log(`decrypt h1: ${h1}`);
 
 
   // STEP 4 - REST OF DECRYPT
@@ -171,7 +171,7 @@ async function decryptionFunc(blk,enck,h0){
 
     for (let i = 0; i < current_block.length; i++){
       plaintext_block += String.fromCharCode(current_block.charCodeAt(i) ^ h1.charCodeAt(i));
-      console.log(plaintext_block);
+      // console.log(plaintext_block);
     }
     blocks.push(plaintext_block);
 
@@ -180,6 +180,6 @@ async function decryptionFunc(blk,enck,h0){
     h1 = await sha256HashFunc(h1 + h1);
   }
 
-  console.log(blocks);
+  // console.log(blocks);
   return blocks.join('');
 }
