@@ -56,3 +56,61 @@ function updateHTML(value,idToUpdate){
   var displayElement = document.getElementById(idToUpdate); // select the element
   displayElement.innerHTML = value; // change its inner html
 }
+
+// encryption function 
+async function encryptionFunc(msn,enck,h0){
+
+  // msn: message
+  // n: number of blocks -- not used in this
+  // enck: key
+  // name_e_File_encrypted: name of file of store e value -- not used in this
+
+  
+  // STEP 1: e = HASH(MSN, H0);
+  let msn_chunks = [];
+  for (let i = 0; i < msn.length; i += enck.length){
+    let chunk = msn.slice(i,i + enck.length);
+    msn_chunks.push(chunk);
+  }
+  let e_val = await sha256HashFunc(msn + h0); // can also use msn.concat(h0) to concate, prob with images tho
+  console.log(`e (plaintext) Hash: ${e_val}`);
+
+
+  // STEP 2: H1 = HASH(ENCK, H0);
+  let h1 = await sha256HashFunc(enck + h0);  // can also use msn.concat(h0) to concate, prob with images tho
+  console.log(`h1 (key) Hash: ${h1}`);
+
+
+  // STEP 3: BLK[0] = e XOR ENCK;
+  let blocks = [];
+  let xored = "";
+  for(let i = 0; i < e_val.length; i++){
+    let initialXor = e_val.charCodeAt(i) ^ h1.charCodeAt(i);
+    xored += String.fromCharCode(initialXor);
+  }
+  blocks.push(xored);
+
+
+  // STEP 4: H1 = HASH(e, H1);
+  // let concat_e_h1 = e_val + h1;
+  // h1 = await sha256HashFunc(concat_e_h1);
+  h1 = await sha256HashFunc(e_val + h1);
+
+
+  // STEP 5: ENCRYPT EACH BLOCK
+  for(let msn_block_no = 0; msn_block_no < msn_chunks.length; msn_block_no++){
+    // BLK[x] = blk[x] XOR H1;
+    let current_block = msn_chunks[msn_block_no];
+    let cipher_block = "";
+    for (let i = 0; i < current_block.length; i++){
+      cipher_block += String.fromCharCode(current_block.charCodeAt(i) ^ h1.charCodeAt(i));
+    }
+    blocks.push(cipher_block);
+
+    // H1 = HASH(H1,H1);
+    h1 = await sha256HashFunc(h1 + h1)
+  }
+
+  // console.log(blocks.length === msn.length);
+  return blocks;
+}
