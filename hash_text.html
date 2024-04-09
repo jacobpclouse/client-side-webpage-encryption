@@ -54,14 +54,15 @@
 
     <!-- Below is page contents, above is the header and sidebar info -->
 
+    <!-- Text Encryption -->
     <div class="container-right">
-      <h1><i class="fas fa-tachometer-alt"></i> Encrypting Text</h1>
+      <h1><i class="fas fa-tachometer-alt"></i> Encryption</h1>
 
       <div class="dashboard-selections">
         <div class="dash-left">
 
           <!-- text encryption below -->
-          <h1>Display Text Input Enck</h1>
+          <h1>Encrypting Text</h1>
 
           <form id="report-form" style="padding: 3em;">
 
@@ -77,28 +78,31 @@
           </form>
           <!-- <p>Click on the submit button to submit the form!</p> -->
 
-          <!-- Image encryption below -->
+          <!-- Display the encrypted value: -->
+          <div id="displayValueEncrypted"></div>
 
-
-<!-- Display the encrypted value: -->
-<div id="displayValueEncrypted"></div>
-
-<!-- Display the decrypted value: -->
-<div id="displayValueDecrypted"></div>
-
-
+          <!-- Display the decrypted value: -->
+          <div id="displayValueDecrypted"></div>
 
         </div>
 
-        <!-- <div class="dash-right">
-          <h1>Recent Changes</h1>
-          <p>Newest Issue: </p>
-          <p>Longest Ongoing Issue: </p>
+        <!-- Image Encryption -->
+        <div class="dash-right">
+          <h1>Encrypting Images</h1>
 
-          <h1>Events</h1>
-          <p>Upcoming: </p>
-          <p>Recently Past: </p>
-        </div> -->
+          <form id="report-form" style="padding: 3em;">
+
+            <div class="form-group">
+              <label for="inputImage">Input Image To Encrypt: </label>
+              <input type="file" id="inputImage" class="form-control" name="inputImage" accept="image/*"><br><br>
+
+              <label for="inputKeyImage">Input Key to Use: </label>
+              <input type="text" id="inputKeyImage" class="form-control" name="inputKeyImage"><br><br>
+            </div>
+
+            <button type="button" onclick="executeImageMain()" value="Encrypt Image!" class="btn">Encrypt Image!</button>
+          </form>
+        </div>
       </div>
 
 
@@ -119,7 +123,8 @@
   </div>
 
   <script src="/js/index.js"></script>
-  <script src="/js/text_encryption.js"></script><!-- link to the encryption javascript -->
+  <script src="/js/text_encryption.js"></script><!-- link to the text encryption javascript -->
+  <script src="/js/image_encryption.js"></script><!-- link to the image encryption javascript -->
 
   <!-- Below are 3rd party library imports -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
