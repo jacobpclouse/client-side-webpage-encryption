@@ -13,3 +13,4 @@ Creating a web site that allows the user to encrypt files entirely client side u
 - Want to use Bootstrap/tailwind.css to make it pretty
 
 ### Resources Used:
+- https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
