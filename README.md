@@ -1,5 +1,10 @@
 # client-side-webpage-encryption
 Creating a web site that allows the user to encrypt files entirely client side using vanillia javascript, no backend required!
+>> Website available at: https://jacobclouse.org/
+
+### Paper: Alternative N-bit Key Data Encryption for Block Ciphers
+    Download link: https://sol.sbc.org.br/index.php/sbseg/article/download/13990/13839/
+
 
 ### Project Goals:
 - Page to encrypt/decrypt Text using hashing/xor
@@ -14,3 +19,4 @@ Creating a web site that allows the user to encrypt files entirely client side u
 
 ### Resources Used:
 - https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+- https://gist.github.com/plembo/84f80c920bb5ac6f19e53fe6f8db1ff7
