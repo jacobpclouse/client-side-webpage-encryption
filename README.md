@@ -14,3 +14,4 @@ Creating a web site that allows the user to encrypt files entirely client side u
 
 ### Resources Used:
 - https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+- https://gist.github.com/plembo/84f80c920bb5ac6f19e53fe6f8db1ff7
