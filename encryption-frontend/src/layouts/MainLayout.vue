@@ -55,46 +55,28 @@ defineOptions({
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'Contact Me',
+    caption: 'clouse.jacob@gmail.com',
+    icon: 'email',
+    link: 'mailto:clouse.jacob@gmail.com'
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
+    title: 'My Github',
+    caption: 'github.com/jacobpclouse',
     icon: 'code',
-    link: 'https://github.com/quasarframework'
+    link: 'https://github.com/jacobpclouse'
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
+    title: 'My LinkedIn',
+    caption: 'linkedin.com/in/jpclouse/',
     icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
+    link: 'https://www.linkedin.com/in/jpclouse/'
   },
   {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
+    title: 'My Website',
+    caption: 'jacobpclouse.com/',
     icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
+    link: 'https://jacobpclouse.com/'
   }
 ]
 
