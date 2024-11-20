@@ -65,8 +65,28 @@
       <div class="dashboard-selections">
         <div class="dash-left">
 
-          <!-- text encryption below -->
-          <h1>Encrypting Text</h1>
+          <!-- text decryption below -->
+          <h1>File Decryption</h1>
+          <form id="text-decryption-form">
+              <label for="encryptedFile">Upload Encrypted File:</label>
+              <input type="file" id="encryptedFile" accept=".txt" required><br><br>
+      
+              <label for="passwordFile">Upload Password File:</label>
+              <input type="file" id="passwordFile" accept=".key" required><br><br>
+      
+              <label for="ivFile">Upload IV Hash File:</label>
+              <input type="file" id="ivFile" accept=".hash" required><br><br>
+      
+              <button type="submit">Decrypt</button>
+          </form>
+      
+          <h2>Decrypted Output:</h2>
+          <div id="decryptedOutput"></div>
+
+
+
+
+          <!-- <h1>Encrypting Text</h1>
 
           <form id="report-form" style="padding: 3em;">
 
@@ -79,20 +99,23 @@
             </div>
 
             <input type="submit" value="Encrypt Text!" class="btn">
-          </form>
+          </form> -->
           <!-- <p>Click on the submit button to submit the form!</p> -->
 
           <!-- Display the encrypted value: -->
-          <div id="displayValueEncrypted"></div>
+          <!-- <div id="displayValueEncrypted"></div> -->
 
           <!-- Display the decrypted value: -->
-          <div id="displayValueDecrypted"></div>
+          <!-- <div id="displayValueDecrypted"></div> -->
 
         </div>
 
-        <!-- Image Encryption -->
+        <!-- Decrypted output -->
         <div class="dash-right">
-          <h1>Encrypting Images</h1>
+
+          <h2>Decrypted Output:</h2>
+          <div id="decryptedOutput"></div>
+          <!-- <h1>Encrypting Images</h1>
 
           <form id="report-form" style="padding: 3em;">
 
@@ -105,7 +128,7 @@
             </div>
 
             <button type="button" onclick="executeImageMain()" value="Encrypt Image!" class="btn">Encrypt Image!</button>
-          </form>
+          </form> -->
         </div>
       </div>
     </div>
@@ -120,6 +143,7 @@
   <script src="/js/index.js"></script>
   <script src="/js/text_encryption.js"></script><!-- link to the text encryption javascript -->
   <script src="/js/image_encryption.js"></script><!-- link to the image encryption javascript -->
+  <script src="/js/decryption.js"></script>
 
   <!-- Below are 3rd party library imports -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
