@@ -143,7 +143,7 @@ async function decryptionFunc(blk,enck,h0){
 
   // STEP 2: e = BLK[0] XOR ENCK;
   initial_block = blk[0];
-  // console.log(`Block Length: ${blk[0].length}`)
+  console.log(`DECRYPTION: Block Length: ${blk[0].length}`)
 
   let e_val = "";
   for (let index = 0; index < blk[0].length; index++){
@@ -154,7 +154,7 @@ async function decryptionFunc(blk,enck,h0){
 
   // STEP 3: H1 = HASH(e, H1);
   h1 = await sha256HashFunc(e_val + h1);
-  // console.log(`decrypt h1: ${h1}`);
+  console.log(`decrypt h1: ${h1}`);
 
 
   // STEP 4 - REST OF DECRYPT
@@ -164,14 +164,14 @@ async function decryptionFunc(blk,enck,h0){
     let plaintext_block = "";
 
     // debugging statements:
-    // console.log(`ciphertext_block: ${ciphertext_block}`);
-    // console.log(`current_block: ${current_block}`);
-    // console.log(`blk.length: ${blk.length}`);
-    // console.log(`blk: ${blk}`);
+    console.log(`ciphertext_block: ${ciphertext_block}`);
+    console.log(`current_block: ${current_block}`);
+    console.log(`blk.length: ${blk.length}`);
+    console.log(`blk: ${blk}`);
 
     for (let i = 0; i < current_block.length; i++){
       plaintext_block += String.fromCharCode(current_block.charCodeAt(i) ^ h1.charCodeAt(i));
-      // console.log(plaintext_block);
+      console.log(plaintext_block);
     }
     blocks.push(plaintext_block);
 
@@ -180,6 +180,6 @@ async function decryptionFunc(blk,enck,h0){
     h1 = await sha256HashFunc(h1 + h1);
   }
 
-  // console.log(blocks);
+  console.log(blocks);
   return blocks.join('');
 }
