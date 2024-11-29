@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/dashboard-selections.css">
   <link rel="stylesheet" href="./css/report-issue-form.css">
-  <title>JPC Client-Side Encryption Dashboard | Hashing Text</title>
+  <title>JPC Client-Side Encryption Dashboard | Alt N Bit Hashing</title>
   <link rel="icon" href="./assets/favicon.ico" type="image/x-icon" >
 </head>
 
@@ -57,7 +57,7 @@
 
     <!-- Text Encryption -->
     <div class="container-right">
-      <h1><i class="fa fa-cog fa-pulse"></i> Encryption</h1>
+      <h1><i class="fa fa-lock fa-spin"></i> Encryption</h1>
       <!-- <h1><i class="fas fa-tachometer-alt"></i> Encryption</h1> -->
 
       <div class="dashboard-selections">
@@ -65,46 +65,58 @@
 
           <!-- text encryption below -->
           <h1>Encrypting Text</h1>
-
-          <form id="report-form" style="padding: 3em;">
-
+          <form id="report-form" style="padding: 1em;">
             <div class="form-group">
               <label for="Description">Input Text To Encrypt: </label>
-              <input type="text" id="Description" class="form-control" name="Description">
-
+              <input type="text" id="Description" class="form-control" name="Description" required>
               <label for="inputKey">Input Key to Use: </label>
-              <input type="text" id="inputKey" class="form-control" name="inputKey">
+              <input type="text" id="inputKey" class="form-control" name="inputKey" required>
             </div>
-
             <input type="submit" value="Encrypt Text!" class="btn">
           </form>
-          <!-- <p>Click on the submit button to submit the form!</p> -->
-
-          <!-- Display the encrypted value: -->
-          <div id="displayValueEncrypted"></div>
-
-          <!-- Display the decrypted value: -->
-          <div id="displayValueDecrypted"></div>
-
-        </div>
+          <div id="displayValueEncrypted"></div><!-- Display the encrypted value: -->
+          <div id="displayValueDecrypted"></div><!-- Display the decrypted value: -->
+          <button id="downloadJson" class="btn-download">Download Encrypted Data</button>
+        </div> <!-- might need another </div>  below -->
 
         <!-- Image Encryption -->
-        <div class="dash-right">
+        <div class="dash-center">
           <h1>Encrypting Images</h1>
 
           <form id="report-form" style="padding: 3em;">
 
             <div class="form-group">
               <label for="inputImage">Input Image To Encrypt: </label>
-              <input type="file" id="inputImage" class="form-control" name="inputImage" accept="image/*"><br><br>
+              <input type="file" id="inputImage" class="form-control" name="inputImage" accept="image/*" required><br><br>
 
               <label for="inputKeyImage">Input Key to Use: </label>
-              <input type="text" id="inputKeyImage" class="form-control" name="inputKeyImage"><br><br>
+              <input type="text" id="inputKeyImage" class="form-control" name="inputKeyImage" required><br><br>
             </div>
 
-            <button type="button" onclick="executeImageMain()" value="Encrypt Image!" class="btn">Encrypt Image!</button>
+            <!-- <button type="button" onclick="executeImageMain()" value="Encrypt Image!" class="btn">Encrypt Image!</button> -->
+            <button type="submit" onclick="executeImageMain()" value="Encrypt Image!" class="btn">Encrypt Image!</button>
+
           </form>
+          <button id="downloadImageJson" class="btn-download">Download Encrypted Image Data</button>
+
         </div>
+
+        <h1><i class="fa fa-cog fa-spin" style="margin-top: 5vh;"></i> Decryption</h1>
+        <!-- <h1><i class="fa fa-cog fa-pulse"></i> Decryption</h1> -->
+        <div class="dash-right">
+          <h1>Decrypt Text or Image Data</h1>
+          <form id="upload-form" style="padding: 3em;">
+            <div class="form-group">
+              <label for="uploadJson">Upload JSON File: </label>
+              <input type="file" id="uploadJson" class="form-control" name="uploadJson" accept=".json" required><br><br>
+            </div>
+            <button type="submit" onclick="uploadAndDecrypt()" class="btn">Upload and Decrypt</button>
+            <!-- <button type="button" onclick="uploadAndDecrypt()" class="btn">Upload and Decrypt</button> -->
+          </form>
+          <div id="displayUploadedDecrypted"></div>
+        </div>
+
+
       </div>
     </div>
   </div>
@@ -114,6 +126,17 @@
     <p><strong>Jacob P Clouse</strong>, &copy; 2024 - To whenever</p>
   </footer>
   </div>
+
+  <!-- Modal -->
+  <div id="warningModal" class="modal">
+    <div class="modal-content">
+      <p>Hey, don't use this to encrypt anything important! This is just for fun.</p>
+      <button id="accpetButton" class="btn">I understand</button>
+    </div>
+  </div>
+
+
+  <!-- </div>  -->
 
   <script src="/js/index.js"></script>
   <script src="/js/text_encryption.js"></script><!-- link to the text encryption javascript -->

@@ -33,6 +33,16 @@ function handleImage(imageID,imageKey){
 
         // downloadFile(returnedEncrypted,"encrypted_image","txt"); // download encrypted
 
+        // Save encrypted image data, key, IV, and header to a global variable
+        window.encryptedImageData = {
+            encrypted: returnedEncrypted,
+            key: inputElementKey,
+            iv: iv_hash,
+            header: base64header,
+            isImage: true
+        };
+
+
         // Decrypt
         let decryptedReturned = await decryptionFunc(returnedEncrypted, inputElementKey, iv_hash);
         console.log(`Decrypted Image: ${decryptedReturned}`);
@@ -45,13 +55,22 @@ function handleImage(imageID,imageKey){
     reader.readAsDataURL(file);
 }
 
-// create image from base 64 string function -- jpeg
-function createImageFromBase64(base64String,header64){
-    let img = new Image();
-    img.onload = function(){
-        document.body.appendChild(img);
-    }
-    // img.src = 'data:image/jpeg;base64,' + base64String;
-    img.src = header64+','+base64String;
-}
+// // create image from base 64 string function -- jpeg
+// function createImageFromBase64(base64String,header64){
+//     let img = new Image();
+//     img.onload = function(){
+//         document.body.appendChild(img);
+//     }
+//     // img.src = 'data:image/jpeg;base64,' + base64String;
+//     img.src = header64+','+base64String;
+// }
 
+function createImageFromBase64(base64String, header64) {
+    let img = new Image();
+    img.onload = function() {
+        const displayElement = document.getElementById("displayUploadedDecrypted");
+        displayElement.innerHTML = ""; // clear any existing content
+        displayElement.appendChild(img);
+    }
+    img.src = header64 + ',' + base64String;
+}

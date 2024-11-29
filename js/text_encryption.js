@@ -15,6 +15,15 @@ document.getElementById("report-form").addEventListener("submit", function(event
 
   });
 
+// ************
+document.getElementById("downloadJson").addEventListener("click",function() {
+  downloadEncryptedData();
+});
+
+document.getElementById("downloadImageJson").addEventListener("click",function() {
+  downloadEncryptedImageData();
+});
+
 async function mainBody(inputText,inputKey){
 
   // Generate IV
@@ -30,6 +39,13 @@ async function mainBody(inputText,inputKey){
   let decryptedReturned = await decryptionFunc(returned, inputKey, iv_hash);
   console.log(`Decrypted: ${decryptedReturned}`);
   updateHTML(decryptedReturned, "displayValueDecrypted");
+
+    // save encrypted data, key, and IV to a global Variable ******
+    window.encryptedData = {
+      encrypted: returned,
+      key: inputKey,
+      iv: iv_hash
+    };
 }
 
 
@@ -182,4 +198,61 @@ async function decryptionFunc(blk,enck,h0){
 
   console.log(blocks);
   return blocks.join('');
+}
+
+// ******** BELOW REAL DOWNLOAD FUNC **********
+
+function downloadEncryptedData() {
+  if (window.encryptedData){
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(window.encryptedData));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href",dataStr);
+    downloadAnchorNode.setAttribute("download","encrypted_data.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  } else {
+    alert("No encrypted data available to download!");
+  }
+}
+
+function uploadAndDecrypt() {
+  const fileInput = document.getElementById('uploadJson');
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+
+  reader.onload = async function(event) {
+    const jsonData = JSON.parse(event.target.result);
+    if (jsonData.encrypted && jsonData.key && jsonData.iv) {
+      const decryptedData = await decryptionFunc(jsonData.encrypted, jsonData.key, jsonData.iv);
+      if (jsonData.isImage) {
+        createImageFromBase64(decryptedData,jsonData.header);
+      } else {
+        updateHTML(decryptedData, "displayUploadedDecrypted");
+      }
+    } else {
+      alert("Invalid JSON file format!");
+    }
+  };
+
+  if (file){
+    reader.readAsText(file);
+  } else {
+    alert("Please select a JSON file to upload.")
+  }
+}
+
+function downloadEncryptedImageData() {
+  console.log("We hit the download Encrypted Image Data Function!!! :D");
+  if(window.encryptedImageData) {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(window.encryptedImageData));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href",dataStr);
+    downloadAnchorNode.setAttribute("download","encrypted_image_data.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  } else {
+    alert("No encrypted image data available to download!");
+  }
 }
