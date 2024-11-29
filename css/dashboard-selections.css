@@ -10,6 +10,7 @@
 
 
 .dash-left,
+.dash-center,
 .dash-right {
     width: 95%;
     background-color: var(--clr-background);
@@ -20,15 +21,60 @@
     min-height: 20vh;
 }
 
-.dash-right{
+.dash-center{
     border: var(--clr-accent) 3px solid;
 }
 
-
-
-.dash-left h1,
-.dash-right h1 {
-    font-weight: bold;
-    font-size: 1.5rem;
+.dash-right{
+    border: var(--clr-dark) 3px solid;
 }
 
+.dash-left h1,
+.dash-center h1,
+.dash-right h1 {
+    font-weight: bold;
+    font-size: 1.75rem;
+}
+
+/* warning modal below */
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: var(--clr-background);
+    /* background-color: rgba(0, 0, 0, 0.4); */
+}
+
+.modal-content {
+    background-color: var(--clr-background);
+    margin: 15% auto;
+    padding: 20px;
+    border: var(--clr-dark) 3px solid;
+    width: 80%;
+    text-align: center;
+}
+
+.close {
+    color: var(--clr-dark);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: var(--clr-light);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* .btn {
+    margin-top: 20px;
+} */
