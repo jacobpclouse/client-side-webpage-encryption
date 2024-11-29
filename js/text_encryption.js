@@ -15,7 +15,17 @@ document
     mainBody(inputText, inputKey);
   });
 
-async function mainBody(inputText, inputKey) {
+// ************
+document.getElementById("downloadJson").addEventListener("click",function() {
+  downloadEncryptedData();
+});
+
+document.getElementById("downloadImageJson").addEventListener("click",function() {
+  downloadEncryptedImageData();
+});
+
+async function mainBody(inputText,inputKey){
+
   // Generate IV
   let iv_hash = await sha256HashFunc(generateIV());
   console.log(`IV Hash: ${iv_hash}`);
@@ -46,7 +56,15 @@ async function mainBody(inputText, inputKey) {
   let decryptedReturned = await decryptionFunc(returned, inputKey, iv_hash);
   console.log(`Decrypted: ${decryptedReturned}`);
   updateHTML(decryptedReturned, "displayValueDecrypted");
+
+    // save encrypted data, key, and IV to a global Variable ******
+    window.encryptedData = {
+      encrypted: returned,
+      key: inputKey,
+      iv: iv_hash
+    };
 }
+
 
 // used to generate IV for initial randomness
 function generateIV() {
@@ -140,7 +158,7 @@ async function decryptionFunc(blk, enck, h0) {
 
   // STEP 2: e = BLK[0] XOR ENCK;
   initial_block = blk[0];
-  // console.log(`Block Length: ${blk[0].length}`)
+  console.log(`DECRYPTION: Block Length: ${blk[0].length}`)
 
   let e_val = "";
   for (let index = 0; index < blk[0].length; index++) {
@@ -150,7 +168,8 @@ async function decryptionFunc(blk, enck, h0) {
 
   // STEP 3: H1 = HASH(e, H1);
   h1 = await sha256HashFunc(e_val + h1);
-  // console.log(`decrypt h1: ${h1}`);
+  console.log(`decrypt h1: ${h1}`);
+
 
   // STEP 4 - REST OF DECRYPT
   let blocks = [];
@@ -163,16 +182,14 @@ async function decryptionFunc(blk, enck, h0) {
     let plaintext_block = "";
 
     // debugging statements:
-    // console.log(`ciphertext_block: ${ciphertext_block}`);
-    // console.log(`current_block: ${current_block}`);
-    // console.log(`blk.length: ${blk.length}`);
-    // console.log(`blk: ${blk}`);
+    console.log(`ciphertext_block: ${ciphertext_block}`);
+    console.log(`current_block: ${current_block}`);
+    console.log(`blk.length: ${blk.length}`);
+    console.log(`blk: ${blk}`);
 
-    for (let i = 0; i < current_block.length; i++) {
-      plaintext_block += String.fromCharCode(
-        current_block.charCodeAt(i) ^ h1.charCodeAt(i)
-      );
-      // console.log(plaintext_block);
+    for (let i = 0; i < current_block.length; i++){
+      plaintext_block += String.fromCharCode(current_block.charCodeAt(i) ^ h1.charCodeAt(i));
+      console.log(plaintext_block);
     }
     blocks.push(plaintext_block);
 
@@ -180,6 +197,63 @@ async function decryptionFunc(blk, enck, h0) {
     h1 = await sha256HashFunc(h1 + h1);
   }
 
-  // console.log(blocks);
-  return blocks.join("");
+  console.log(blocks);
+  return blocks.join('');
+}
+
+// ******** BELOW REAL DOWNLOAD FUNC **********
+
+function downloadEncryptedData() {
+  if (window.encryptedData){
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(window.encryptedData));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href",dataStr);
+    downloadAnchorNode.setAttribute("download","encrypted_data.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  } else {
+    alert("No encrypted data available to download!");
+  }
+}
+
+function uploadAndDecrypt() {
+  const fileInput = document.getElementById('uploadJson');
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+
+  reader.onload = async function(event) {
+    const jsonData = JSON.parse(event.target.result);
+    if (jsonData.encrypted && jsonData.key && jsonData.iv) {
+      const decryptedData = await decryptionFunc(jsonData.encrypted, jsonData.key, jsonData.iv);
+      if (jsonData.isImage) {
+        createImageFromBase64(decryptedData,jsonData.header);
+      } else {
+        updateHTML(decryptedData, "displayUploadedDecrypted");
+      }
+    } else {
+      alert("Invalid JSON file format!");
+    }
+  };
+
+  if (file){
+    reader.readAsText(file);
+  } else {
+    alert("Please select a JSON file to upload.")
+  }
+}
+
+function downloadEncryptedImageData() {
+  console.log("We hit the download Encrypted Image Data Function!!! :D");
+  if(window.encryptedImageData) {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(window.encryptedImageData));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href",dataStr);
+    downloadAnchorNode.setAttribute("download","encrypted_image_data.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  } else {
+    alert("No encrypted image data available to download!");
+  }
 }

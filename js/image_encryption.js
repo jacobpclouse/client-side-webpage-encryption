@@ -34,24 +34,17 @@ function handleImage(imageID, imageKey) {
     console.log(`Final Image Blocks: ${returnedEncrypted}`);
     // updateHTML(returnedEncrypted,"displayValueEncrypted")
 
-    // downloadFile(returnedEncrypted,"encrypted_image","txt"); // download encrypted
+        // downloadFile(returnedEncrypted,"encrypted_image","txt"); // download encrypted
 
-    // --- Download encrypted files and keys ----
-    var files = [
-      { name: "encrypted_image", content: returnedEncrypted, extension: "txt" },
-      { name: "password_key", content: inputElementKey, extension: "key" },
-      { name: "iv_hash", content: iv_hash, extension: "hash" },
-      {
-        name: "instructions",
-        content:
-          "You have downloaded your encrypted image along with the password you used and a random intialization vector called iv_hash. To decrypt this go to the decryption section of jacobclouse.org and upload the encrypted data, the password and the hash files. Then you can submit them and your image will be decrypted!",
-        extension: "txt",
-      },
-    ];
+        // Save encrypted image data, key, IV, and header to a global variable
+        window.encryptedImageData = {
+            encrypted: returnedEncrypted,
+            key: inputElementKey,
+            iv: iv_hash,
+            header: base64header,
+            isImage: true
+        };
 
-    downloadZip(files, "Image");
-
-    // ---
 
     // Decrypt
     let decryptedReturned = await decryptionFunc(
@@ -68,12 +61,22 @@ function handleImage(imageID, imageKey) {
   reader.readAsDataURL(file);
 }
 
-// create image from base 64 string function -- jpeg
+// // create image from base 64 string function -- jpeg
+// function createImageFromBase64(base64String,header64){
+//     let img = new Image();
+//     img.onload = function(){
+//         document.body.appendChild(img);
+//     }
+//     // img.src = 'data:image/jpeg;base64,' + base64String;
+//     img.src = header64+','+base64String;
+// }
+
 function createImageFromBase64(base64String, header64) {
-  let img = new Image();
-  img.onload = function () {
-    document.body.appendChild(img);
-  };
-  // img.src = 'data:image/jpeg;base64,' + base64String;
-  img.src = header64 + "," + base64String;
+    let img = new Image();
+    img.onload = function() {
+        const displayElement = document.getElementById("displayUploadedDecrypted");
+        displayElement.innerHTML = ""; // clear any existing content
+        displayElement.appendChild(img);
+    }
+    img.src = header64 + ',' + base64String;
 }

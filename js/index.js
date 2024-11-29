@@ -15,56 +15,23 @@
 //         } else {
 //           tr[i].style.display = "none";
 //         }
-//       }
+//       }       
 //     }
 //   }
 
-// ===============================================================
 
-function defangDatetime() {
-  var currentDatetime = new Date();
+// get the modal
+var modal = document.getElementById("warningModal");
 
-  var formattedDatetime = currentDatetime
-    .toISOString()
-    .replace(/:/g, "_")
-    .replace(/\./g, "-")
-    .replace(/T/g, "__TIME-")
-    .replace(/Z/g, "");
-  return `_DATE-${formattedDatetime}`;
+// get teh button that closes the modal
+var acceptButton = document.getElementById("acceptButton");
+
+// when the user clicks on the button, close the modal
+acceptButton.onclick = function() {
+  modal.style.display = "none";
 }
 
-// used to download a TEXT file ***
-function downloadFile(input, name, extension) {
-  var blob = new Blob([input], { type: "text/plain;charset=utf-8" });
-  var url = URL.createObjectURL(blob);
-  var link = document.createElement("a");
-  link.href = url;
-  // link.download = 'output.txt'
-  link.download = `${name}.${extension}`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
-
-// function used to create multiple files and add them to a zip to download
-function downloadZip(files, textOrImage) {
-  var zip = new JSZip();
-  var current_time = defangDatetime();
-
-  // add files to zip
-  files.forEach((file) => {
-    zip.file(`${file.name}.${file.extension}`, file.content);
-  });
-
-  // Generate the zip file and download it
-
-  zip.generateAsync({ type: "blob" }).then(function (content) {
-    var url = URL.createObjectURL(content);
-    var link = document.createElement("a");
-    link.href = url;
-    link.download = `encrypted_${textOrImage}_${current_time}.zip`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  });
+// show the modal when the page loads
+window.onload = function() {
+  modal.style.display = "block";
 }
